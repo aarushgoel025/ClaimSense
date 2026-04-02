@@ -22,7 +22,8 @@ function App() {
     try {
       setTimeout(() => setLoadingStep('⚖️ Checking IRDAI precedents...'), 1500);
 
-      const response = await fetch('http://localhost:8000/analyze', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/analyze`, {
         method: 'POST',
         body: formData,
       });
