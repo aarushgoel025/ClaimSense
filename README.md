@@ -21,7 +21,8 @@ ClaimSense is a full-stack web application built for Indian health insurance pol
 11. [Environment Variables](#environment-variables)
 12. [Escalation Framework](#escalation-framework)
 13. [Legal Precedents Database](#legal-precedents-database)
-14. [Disclaimer](#disclaimer)
+14. [Author](#author)
+15. [Disclaimer](#disclaimer)
 
 ---
 
@@ -447,6 +448,14 @@ ClaimSense includes a curated database of real Indian Ombudsman judgments and st
 
 ---
 
+## Author
+
+**Aarush Goel**
+* **GitHub:** [@aarushgoel025](https://github.com/aarushgoel025)
+* **LinkedIn:** [Aarush Goel](https://linkedin.com/in/aarush-goel-05129028a)
+---
+*If you like this project, please consider giving it a ⭐ on GitHub!*
+
 ## Disclaimer
 
 ClaimSense is an AI-assisted decision-support tool for informational purposes only. It does not constitute legal advice. The analysis and letters generated are based on publicly available IRDAI regulations and curated Ombudsman precedents.
@@ -457,4 +466,5 @@ The IRDAI Bima Bharosa portal and Insurance Ombudsman offices are free, official
 
 ---
 
-*Built with ❤️ for Indian health insurance consumers. ClaimSense © 2026.*
+*Built with ❤️ for Indian health insurance consumers.*
+
