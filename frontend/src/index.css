@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================= */
+:root {
+  --color-arctic-bg: #F8FAFC;
+  --color-arctic-secondary: #EFF4FB;
+  --color-arctic-card: #FFFFFF;
+  --color-arctic-card-subtle: #EBF2FF;
+  --color-navy-deep: #0A1628;
+  --color-navy-mid: #1E3A5F;
+  --color-electric-blue: #1D6FF2;
+  --color-success-green: #0D9E6E;
+  --color-warning-amber: #E8900A;
+  --color-danger-red: #D93B3B;
+  --color-text-muted: #7A92A9;
+  --color-border-default: #DAEAF7;
+  --color-neon-orange: #FF5E00;
+  --color-neon-orange-dark: #E65500;
+  --color-clara-orange: #ed7b58;
+  --font-display: 'Sora', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-arctic-bg);
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-navy-deep);
+  font-family: var(--font-display);
+}
+
+/* =============================================
+   CUSTOM COLOR UTILITY CLASSES
+   ============================================= */
+
+/* Background colors */
+.bg-arctic-bg { background-color: var(--color-arctic-bg) !important; }
+.bg-arctic-secondary { background-color: var(--color-arctic-secondary) !important; }
+.bg-arctic-card { background-color: var(--color-arctic-card) !important; }
+.bg-arctic-card-subtle { background-color: var(--color-arctic-card-subtle) !important; }
+.bg-navy-deep { background-color: var(--color-navy-deep) !important; }
+.bg-navy-mid { background-color: var(--color-navy-mid) !important; }
+.bg-electric-blue { background-color: var(--color-electric-blue) !important; }
+.bg-neon-orange { background-color: var(--color-neon-orange) !important; }
+.bg-neon-orange-dark { background-color: var(--color-neon-orange-dark) !important; }
+.bg-success-green { background-color: var(--color-success-green) !important; }
+.bg-warning-amber { background-color: var(--color-warning-amber) !important; }
+.bg-danger-red { background-color: var(--color-danger-red) !important; }
+
+/* Text colors */
+.text-arctic-bg { color: var(--color-arctic-bg) !important; }
+.text-navy-deep { color: var(--color-navy-deep) !important; }
+.text-navy-mid { color: var(--color-navy-mid) !important; }
+.text-electric-blue { color: var(--color-electric-blue) !important; }
+.text-neon-orange { color: var(--color-neon-orange) !important; }
+.text-text-muted { color: var(--color-text-muted) !important; }
+.text-success-green { color: var(--color-success-green) !important; }
+.text-warning-amber { color: var(--color-warning-amber) !important; }
+.text-danger-red { color: var(--color-danger-red) !important; }
+
+/* Border colors */
+.border-border-default { border-color: var(--color-border-default) !important; }
+.border-electric-blue { border-color: var(--color-electric-blue) !important; }
+.border-neon-orange { border-color: var(--color-neon-orange) !important; }
+.border-clara-orange { border-color: var(--color-clara-orange) !important; }
+
+/* Font families */
+.font-display { font-family: var(--font-display) !important; }
+.font-sans { font-family: var(--font-sans) !important; }
+.font-mono { font-family: var(--font-mono) !important; }
+
+/* Hover backgrounds */
+.hover\:bg-neon-orange-dark:hover { background-color: var(--color-neon-orange-dark) !important; }
+.hover\:bg-navy-mid:hover { background-color: var(--color-navy-mid) !important; }
+.hover\:text-white:hover { color: #ffffff !important; }
+.hover\:text-electric-blue:hover { color: var(--color-electric-blue) !important; }
+.hover\:border-electric-blue:hover { border-color: var(--color-electric-blue) !important; }
+
+/* =============================================
+   CUSTOM SHADOW UTILITY CLASSES
+   ============================================= */
+.shadow-card-elevated {
+  box-shadow: 0 2px 12px rgba(10, 22, 40, 0.07), 0 1px 3px rgba(10, 22, 40, 0.05) !important;
+}
+.shadow-card-hover {
+  box-shadow: 0 8px 32px rgba(29, 111, 242, 0.14), 0 2px 8px rgba(10, 22, 40, 0.08) !important;
+}
+.shadow-card-active {
+  box-shadow: 0 12px 48px rgba(29, 111, 242, 0.20) !important;
+}
+.hover\:shadow-card-hover:hover {
+  box-shadow: 0 8px 32px rgba(29, 111, 242, 0.14), 0 2px 8px rgba(10, 22, 40, 0.08) !important;
+}
+.hover\:shadow-card-elevated:hover {
+  box-shadow: 0 2px 12px rgba(10, 22, 40, 0.07), 0 1px 3px rgba(10, 22, 40, 0.05) !important;
+}
+
+/* =============================================
+   COMPONENT CLASSES
+   ============================================= */
+.btn-primary {
+  background-color: var(--color-electric-blue);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(10, 22, 40, 0.07);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background-color: #1a5fd6;
+  box-shadow: 0 8px 32px rgba(29, 111, 242, 0.14);
+}
+
+.btn-secondary {
+  background-color: var(--color-arctic-card);
+  color: var(--color-navy-mid);
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border-default);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--color-electric-blue);
+  box-shadow: 0 2px 12px rgba(10, 22, 40, 0.07);
+}
+
+.card {
+  background-color: var(--color-arctic-card);
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(10, 22, 40, 0.07), 0 1px 3px rgba(10, 22, 40, 0.05);
+  padding: 1.5rem;
+}
+.card-featured {
+  background-color: var(--color-arctic-card);
+  border-radius: 1rem;
+  box-shadow: 0 12px 48px rgba(29, 111, 242, 0.20);
+  padding: 1.5rem;
+  border-top: 2px solid var(--color-electric-blue);
+}
