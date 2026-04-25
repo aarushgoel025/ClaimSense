@@ -3,6 +3,7 @@ import UploadSection from './components/UploadSection';
 import ResultsCard from './components/ResultsCard';
 import AppealLetter from './components/AppealLetter';
 import DocumentChecklist from './components/DocumentChecklist';
+import ActionRoadmap from './components/ActionRoadmap';
 
 function App() {
   const [analysisResult, setAnalysisResult] = useState(null);
@@ -296,6 +297,9 @@ function App() {
                 <DocumentChecklist checklist={analysisResult.document_checklist} />
               </div>
             </div>
+
+            {/* ── Action Roadmap ── */}
+            <ActionRoadmap isChallengeable={analysisResult.is_challengeable} />
           </div>
         )}
       </main>
