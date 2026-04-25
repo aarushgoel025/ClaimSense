@@ -1,5 +1,5 @@
-import React from 'react';
-import { ShieldCheck, ShieldAlert, FileSearch, Scale } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, ShieldAlert, FileSearch, Scale, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function ResultsCard({ result }) {
   const {
@@ -9,8 +9,11 @@ export default function ResultsCard({ result }) {
     success_probability,
     probability_reasoning,
     legal_basis,
-    precedent_data
+    precedent_data,
+    score_breakdown
   } = result;
+
+  const [showBreakdown, setShowBreakdown] = useState(false);
 
   const getScoreColor = (score) => {
     if (score > 70) return 'text-success-green border-success-green/20 bg-success-green/5';
@@ -22,6 +25,20 @@ export default function ResultsCard({ result }) {
     if (score > 70) return 'text-success-green';
     if (score >= 40) return 'text-amber-500';
     return 'text-danger-red';
+  };
+
+  const getBarColor = (score, max) => {
+    const pct = (score / max) * 100;
+    if (pct > 70) return 'bg-success-green';
+    if (pct >= 40) return 'bg-amber-500';
+    return 'bg-danger-red';
+  };
+
+  const getBarBgColor = (score, max) => {
+    const pct = (score / max) * 100;
+    if (pct > 70) return 'bg-success-green/10';
+    if (pct >= 40) return 'bg-amber-500/10';
+    return 'bg-danger-red/10';
   };
 
   return (
@@ -67,16 +84,65 @@ export default function ResultsCard({ result }) {
               <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getScoreColor(success_probability || 0)}`}>
                 {(success_probability || 0) > 70 ? 'HIGH PROBABILITY' : (success_probability || 0) >= 40 ? 'POTENTIAL CASE' : 'DIFFICULT CASE'}
               </span>
-              <span className="text-xs text-text-muted font-medium italic">AI Confidence Rating</span>
+              <span className="text-xs text-text-muted font-medium italic">Category-Based Rating</span>
             </div>
             <h4 className="text-lg font-bold text-navy-deep leading-tight mb-2">
               {probability_reasoning || "Based on common IRDAI framework and precedent strength."}
             </h4>
             <p className="text-sm text-text-muted leading-relaxed">
-              Our AI calculated this score by cross-referencing {is_challengeable ? 'the potential for reversal' : 'the validity of the exclusion'} against historical Ombudsman outcomes.
+              Score calculated across {score_breakdown?.length || 6} independent evaluation categories, each scored by AI against IRDAI regulations and Ombudsman precedents.
             </p>
           </div>
         </div>
+
+        {/* Score Breakdown Toggle */}
+        {score_breakdown && score_breakdown.length > 0 && (
+          <div className="mb-8 pb-8 border-b border-border-default/50">
+            <button
+              onClick={() => setShowBreakdown(!showBreakdown)}
+              className="w-full flex items-center justify-between text-left group"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded bg-electric-blue/10 flex items-center justify-center text-electric-blue">
+                  <Scale size={14} />
+                </div>
+                <span className="font-bold text-navy-deep text-sm">Score Breakdown by Category</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted bg-arctic-card-subtle px-2 py-0.5 rounded">
+                  {score_breakdown.length} categories
+                </span>
+              </div>
+              <div className="text-text-muted group-hover:text-electric-blue transition-colors">
+                {showBreakdown ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </div>
+            </button>
+
+            {showBreakdown && (
+              <div className="mt-5 space-y-4 animate-fade-in">
+                {score_breakdown.map((cat, idx) => (
+                  <div key={cat.key || idx} className="group">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-sm font-semibold text-navy-deep">{cat.label}</span>
+                      <span className="text-sm font-bold text-navy-deep">
+                        {cat.score}<span className="text-text-muted font-normal">/{cat.max_score}</span>
+                      </span>
+                    </div>
+                    <div className={`w-full h-2.5 rounded-full ${getBarBgColor(cat.score, cat.max_score)} overflow-hidden`}>
+                      <div
+                        className={`h-full rounded-full ${getBarColor(cat.score, cat.max_score)} transition-all duration-700 ease-out`}
+                        style={{ width: `${(cat.score / cat.max_score) * 100}%` }}
+                      />
+                    </div>
+                    {cat.reasoning && (
+                      <p className="text-xs text-text-muted mt-1 leading-relaxed italic">
+                        {cat.reasoning}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex justify-between items-start mb-6">
           <div>

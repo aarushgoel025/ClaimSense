@@ -37,7 +37,7 @@ function App() {
 
       const data = await response.json();
       setAnalysisResult(data);
-      
+
       // Update history
       const newHistory = [data, ...history.filter(h => h.rejection_reason !== data.rejection_reason)].slice(0, 3);
       setHistory(newHistory);
@@ -166,8 +166,8 @@ function App() {
                   </div>
                   <div className="grid md:grid-cols-3 gap-6">
                     {history.map((report, idx) => (
-                      <div 
-                        key={idx} 
+                      <div
+                        key={idx}
                         onClick={() => setAnalysisResult(report)}
                         className="bg-white p-6 rounded-xl border border-border-default hover:border-neon-orange/50 hover:shadow-card-hover transition-all cursor-pointer group relative overflow-hidden"
                       >
@@ -176,11 +176,10 @@ function App() {
                           <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded ${report.is_challengeable ? 'bg-success-green/10 text-success-green' : 'bg-danger-red/10 text-danger-red'}`}>
                             {report.is_challengeable ? 'Challengeable' : 'Valid'}
                           </span>
-                          <span className={`font-bold text-lg ${
-                            (report.success_probability || 0) > 70 ? 'text-success-green' :
-                            (report.success_probability || 0) >= 40 ? 'text-amber-500' :
-                            'text-danger-red'
-                          }`}>
+                          <span className={`font-bold text-lg ${(report.success_probability || 0) > 70 ? 'text-success-green' :
+                              (report.success_probability || 0) >= 40 ? 'text-amber-500' :
+                                'text-danger-red'
+                            }`}>
                             {report.success_probability || 0}%
                           </span>
                         </div>
@@ -266,13 +265,25 @@ function App() {
         {/* Analysis Dashboard */}
         {analysisResult && !isLoading && (
           <div className="container mx-auto px-6 py-12 max-w-6xl animate-fade-in relative z-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <button onClick={handleReset} className="text-text-muted hover:text-electric-blue font-semibold mb-2 flex items-center gap-2 transition-colors">
                   ← Back to Uploads
                 </button>
                 <h2 className="text-4xl font-display font-extrabold text-navy-deep">Claim Analysis Report</h2>
               </div>
+            </div>
+
+            {/* ── Legal Disclaimer Banner ── */}
+            <div className="mb-8 flex items-start gap-3 bg-amber-500/8 border border-amber-500/25 rounded-xl px-5 py-4">
+              <span className="text-amber-500 text-lg mt-0.5 flex-shrink-0">⚖️</span>
+              <p className="text-sm text-amber-700 leading-relaxed">
+                <span className="font-bold">Important Disclaimer: </span>
+                The success score and analysis provided by ClaimSense are AI-generated estimates based on IRDAI guidelines and Ombudsman precedents.
+                They are intended to <span className="font-semibold">guide and inform</span>, not to serve as legal advice. Even a high score does not guarantee a
+                favourable outcome — legal proceedings are inherently unpredictable. We strongly recommend consulting a qualified insurance
+                legal advisor before taking formal action.
+              </p>
             </div>
 
             <div className="grid lg:grid-cols-[1fr_400px] gap-8">

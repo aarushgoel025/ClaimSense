@@ -195,81 +195,76 @@ PRECEDENTS_DB = {
         "text": "Insurers are prohibited from excluding 'Congenital Internal' diseases. Only 'Congenital External' diseases (visible defects) can be excluded under specific policy conditions."
     },
 
-    # Case 40: ICU Upgrade Rejection
     "ICU_REJECTION": {
         "title": "Arbitrary Rejection of ICU / Critical Care Charges",
         "citation": "National Consumer Disputes Redressal Commission (NCDRC) in New India Assurance Co. Ltd. v. Smt. Saroj Devi, 2021",
         "text": "The NCDRC held that an insurer cannot reject ICU charges merely because the patient 'stabilized' within a short period. Once a physician certifies that ICU admission was medically required at the time of admission, the charges must be honoured. Post-facto review of medical necessity by non-medical insurance staff is not permissible under IRDAI norms."
     },
 
-    # Case 41: Sub-Limit Dispute on Surgical Procedures
     "SUB_LIMIT_SURGERY": {
         "title": "Unreasonable Sub-Limit Applied to Major Surgical Procedures",
         "citation": "Oriental Insurance Co. Ltd. v. Nanak Chand Bhatia (NCDRC, 2020) & IRDAI Circular IRDA/HLT/REG/CIR/168/06/2020",
         "text": "The NCDRC ruled that where an insurer applies a sub-limit to a surgical procedure that is not explicitly and clearly listed in the policy schedule, such deduction amounts to an 'unfair trade practice'. Sub-limits must be unambiguously disclosed in the policy at inception and cannot be buried in fine print."
     },
 
-    # Case 42: Senior Citizen Policy Renewal Denial
     "SENIOR_RENEWAL_DENIAL": {
         "title": "Wrongful Non-Renewal of Senior Citizen Health Policy",
         "citation": "United India Insurance Co. Ltd. v. Mani Mehra (Delhi SCDRC, 2019) & IRDAI Circular on Renewal Rights",
         "text": "The State Consumer Commission ruled that an insurer cannot refuse renewal of a health insurance policy to a senior citizen solely due to advancing age or frequent claims. IRDAI guidelines guarantee lifelong renewal rights to existing policyholders, and non-renewal without proven fraud is a clear deficiency in service."
     },
 
-    # Case 43: Spouse Coverage Continuity after Policyholder's Death
     "SPOUSE_CONTINUITY": {
         "title": "Continuity of Coverage for Spouse/Dependent after Group Policy Exit",
         "citation": "LIC of India v. Consumer Education & Research Society (Supreme Court, 2019) & IRDAI Portability Guidelines",
         "text": "The Supreme Court reaffirmed that a dependent spouse or child must be allowed to port to an individual policy upon the primary policyholder's death, retirement, or divorce without any fresh waiting period. The insurer must protect continuity benefits (waiting period credits) accrued under the group policy."
     },
 
-    # Case 44: Telemedicine Consultation Coverage
     "TELEMEDICINE": {
         "title": "Rejection of Telemedicine Pre- and Post-Hospitalization Expenses",
         "citation": "IRDAI Circular on Telemedicine: IRDAI/HLT/CIR/2020/74 & Telemedicine Practice Guidelines (MCI, 2020)",
         "text": "Per the 2020 IRDAI circular and the Medical Council of India's Telemedicine Practice Guidelines, valid teleconsultations with registered medical practitioners are equivalent to in-person consultations. Insurers cannot disallow pre- or post-hospitalization teleconsultation charges as 'not a recognized medical consultation'."
     },
 
-    # Case 45: Twin / Concurrent Disease Treatment
     "CONCURRENT_DISEASE": {
         "title": "Rejection of Claims for Concurrent / Co-Existing Medical Conditions",
         "citation": "Reliance General Insurance Co. Ltd. v. Shyam Lal Sachdeva (NCDRC, 2018)",
         "text": "The NCDRC held that if a patient is hospitalized for one condition (e.g., heart disease) and a second condition (e.g., kidney failure) is simultaneously managed during the same hospitalization, the insurer cannot reject the expenses for the secondary condition citing it as a 'separate event'. Both conditions treated during a single hospitalization episode must be covered."
     },
 
-    # Case 46: Insurer Delay in Claim Settlement
     "CLAIM_SETTLEMENT_DELAY": {
         "title": "Compensation for Insurer's Delay in Claim Settlement",
         "citation": "Max Bupa Health Insurance Co. Ltd. v. Naveen Buttan (NCDRC, 2022)",
         "text": "The NCDRC awarded compensation (interest + penalty) to the consumer for an insurer's delay in settling a valid claim beyond the 30-day mandatory settlement period. Under IRDAI Regulations 2017, any delay beyond 30 days from receipt of all documents entitles the claimant to interest at 2% above bank rate plus damages for mental agony."
     },
 
-    # Case 47: Wrongful Exclusion of Cancer Treatment Drugs
     "CANCER_DRUG_EXCLUSION": {
         "title": "Wrongful Exclusion of Prescribed Cancer Treatment Drugs",
         "citation": "Star Health & Allied Insurance v. Prem Kumar (Madras HC, 2021) & IRDAI Modern Treatment Guidelines",
         "text": "The Madras High Court ruled that excluding prescribed oncology drugs (including oral chemotherapy) from the claim on the ground that they were 'dispensed outside the hospital' is illegal. The mandate under IRDAI's Modern Treatment guidelines is clear: cancer drugs prescribed during a covered hospitalization episode must be reimbursed in full."
     },
 
-    # Case 48: Wrongful Rejection via TPA (Third Party Administrator)
     "TPA_WRONGFUL_REJECTION": {
         "title": "Wrongful Claim Rejection by TPA without Insurer Oversight",
         "citation": "National Insurance Co. Ltd. v. Priya Choubey (Rajasthan SCDRC, 2023)",
         "text": "The State Consumer Commission held that the insurer bears full legal liability for wrongful rejections made by its Third Party Administrator (TPA). An insurer cannot deflect responsibility by blaming TPA decisions. A claim rejected by a TPA without adequate medical reasoning constitutes a 'deficiency of service' directly attributable to the insurer."
     },
 
-    # Case 49: Ambulance Charges Denial
     "AMBULANCE_CHARGES": {
         "title": "Denial of Ambulance / Emergency Transport Charges",
         "citation": "Bajaj Allianz General Insurance Co. v. Sushila Mantri (Maharashtra SCDRC, 2020) & IRDAI Standard Benefits Clause",
         "text": "The Maharashtra Consumer Commission ruled in the consumer's favour, holding that IRDAI's standardized health policy mandates coverage for ambulance charges incurred for a genuine medical emergency. Denying ambulance charges citing 'optional benefit not selected' when the standard policy document includes it is a deceptive trade practice."
     },
 
-    # Case 50: Rejection Due to Policy Wording Ambiguity
     "AMBIGUOUS_POLICY_WORDING": {
         "title": "Ambiguous Policy Wording Resolved in Consumer's Favour",
         "citation": "LIC of India v. Asha Goel (Supreme Court, 2001) & NCDRC Ruling: Primus Medical Claim Case (2022)",
         "text": "The Supreme Court established the precedent that wherever there is genuine ambiguity in the interpretation of an insurance policy clause, the benefit of the doubt must always go to the consumer (Contra Proferentem Rule). An insurer who drafts an ambiguous exclusion clause cannot use it to deny a claim when the clause reasonably supports the consumer's interpretation."
+    },
+
+    "MEDICAL_NEGLIGENCE_OUT_OF_SCOPE": {
+        "title": "Treatment Taken Outside Network Hospitals",
+        "citation": "Consumer Protection Act, 2019",
+        "text": "This is a classic case of medical negligence or deficiency in service rather than a pure insurance dispute. The appropriate legal remedy is to file a medical negligence lawsuit against the hospital and doctors under the Consumer Protection Act, rather than appealing the health insurance rejection."
     }
 }
 
