@@ -9,6 +9,7 @@ from parser import extract_text_from_pdf, clean_text
 from irdai_guidelines import IRDAI_GUIDELINES
 from analyzer import analyze_rejection
 from letter_generator import generate_appeal_letter
+from document_checklist import get_document_checklist
 
 app = FastAPI(title="ClaimSense API")
 
@@ -66,17 +67,23 @@ async def analyze_claim(
         {"title": "Consumer Forum", "desc": "For amounts above ₹30 lakhs or if Ombudsman fails"}
     ]
 
+    # 4. Document Checklist
+    rejection_category = analysis_result.get("rejection_category", "OTHER")
+    is_challengeable = analysis_result.get("is_challengeable", False)
+    document_checklist = get_document_checklist(rejection_category, is_challengeable)
+
     return {
         "rejection_reason": analysis_result.get("rejection_reason", "Analysis failed"),
         "plain_explanation": analysis_result.get("plain_explanation", "Could not analyze the document."),
-        "is_challengeable": analysis_result.get("is_challengeable", False),
+        "is_challengeable": is_challengeable,
         "success_probability": analysis_result.get("success_probability", 0),
         "probability_reasoning": analysis_result.get("probability_reasoning", ""),
         "score_breakdown": analysis_result.get("score_breakdown", []),
         "legal_basis": analysis_result.get("legal_basis", ""),
         "appeal_letter": appeal_letter,
         "escalation_steps": escalation_steps,
-        "precedent_data": analysis_result.get("precedent_data")
+        "precedent_data": analysis_result.get("precedent_data"),
+        "document_checklist": document_checklist
     }
 
 # Also support JSON payload for text-only
@@ -104,17 +111,22 @@ async def analyze_claim_text(payload: TextPayload):
         {"title": "Consumer Forum", "desc": "For amounts above ₹30 lakhs or if Ombudsman fails"}
     ]
 
+    rejection_category = analysis_result.get("rejection_category", "OTHER")
+    is_challengeable = analysis_result.get("is_challengeable", False)
+    document_checklist = get_document_checklist(rejection_category, is_challengeable)
+
     return {
         "rejection_reason": analysis_result.get("rejection_reason", "Analysis failed"),
         "plain_explanation": analysis_result.get("plain_explanation", "Could not analyze the document."),
-        "is_challengeable": analysis_result.get("is_challengeable", False),
+        "is_challengeable": is_challengeable,
         "success_probability": analysis_result.get("success_probability", 0),
         "probability_reasoning": analysis_result.get("probability_reasoning", ""),
         "score_breakdown": analysis_result.get("score_breakdown", []),
         "legal_basis": analysis_result.get("legal_basis", ""),
         "appeal_letter": appeal_letter,
         "escalation_steps": escalation_steps,
-        "precedent_data": analysis_result.get("precedent_data")
+        "precedent_data": analysis_result.get("precedent_data"),
+        "document_checklist": document_checklist
     }
 
 if __name__ == "__main__":

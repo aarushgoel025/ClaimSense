@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UploadSection from './components/UploadSection';
 import ResultsCard from './components/ResultsCard';
 import AppealLetter from './components/AppealLetter';
+import DocumentChecklist from './components/DocumentChecklist';
 
 function App() {
   const [analysisResult, setAnalysisResult] = useState(null);
@@ -292,6 +293,7 @@ function App() {
               </div>
               <div className="space-y-8">
                 <AppealLetter letter={analysisResult.appeal_letter} isChallengeable={analysisResult.is_challengeable} />
+                <DocumentChecklist checklist={analysisResult.document_checklist} />
               </div>
             </div>
           </div>

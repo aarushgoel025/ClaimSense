@@ -47,7 +47,10 @@ def analyze_rejection(text: str, irdai_rules: str) -> dict:
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
     model = genai.GenerativeModel('gemini-2.5-flash')
 
-    categories_desc = "\n".join(f"- '{k}': {v['title']}" for k, v in PRECEDENTS_DB.items())
+    # ── PASS 1: Case Analysis (no precedent selection) ────────────────
+    # Gemini's only job here is to understand the rejection and score it.
+    # We deliberately keep precedent selection OUT of this call to avoid
+    # keyword hallucination from cognitive overload.
 
     # Build the scoring rubric for the prompt
     scoring_rubric_lines = []
@@ -57,14 +60,11 @@ def analyze_rejection(text: str, irdai_rules: str) -> dict:
         )
     scoring_rubric = ",\n".join(scoring_rubric_lines)
 
-    prompt = f"""You are ClaimSense, an expert Indian health insurance legal advisor.
-You help policyholders understand and challenge wrongful insurance
-claim rejections.
-Given a health insurance rejection letter and relevant IRDAI guidelines,
-you must respond ONLY in this exact JSON format:
+    pass1_prompt = f"""You are ClaimSense, an expert Indian health insurance legal advisor.
+Analyze the following health insurance rejection letter and respond ONLY in this exact JSON format:
 {{
-"rejection_category": "MUST BE EXACTLY ONE OF the following keys based on the matching reason:\n{categories_desc}",
 "rejection_reason": "One sentence: what reason did the insurer give",
+"core_legal_issue": "One sentence: describe the SPECIFIC legal issue at stake (e.g. 'Insurer is excluding a claim citing medical negligence by a third-party doctor as proximate cause of death')",
 "plain_explanation": "2-3 sentences in simple English explaining what this means for the policyholder",
 "is_challengeable": true or false,
 "category_scores": {{
@@ -87,29 +87,19 @@ Rejection Letter Content:
 {text}"""
 
     try:
-        response = model.generate_content(
-            prompt,
+        pass1_response = model.generate_content(
+            pass1_prompt,
             generation_config=genai.GenerationConfig(
                 response_mime_type="application/json"
             )
         )
-        result_json = json.loads(response.text)
-        result_json = _compute_final_score(result_json)
-        category = result_json.get("rejection_category", "OTHER")
-        result_json["precedent_data"] = get_precedent(category)
-        return result_json
+        result_json = json.loads(pass1_response.text)
     except Exception as e:
-        # Fallback if json extraction fails
         try:
-            # Handle possible markdown json codeblock
-            raw_text = response.text if response else ""
+            raw_text = pass1_response.text if pass1_response else ""
             cleaned = raw_text.replace('```json', '').replace('```', '').strip()
             result_json = json.loads(cleaned)
-            result_json = _compute_final_score(result_json)
-            category = result_json.get("rejection_category", "OTHER")
-            result_json["precedent_data"] = get_precedent(category)
-            return result_json
-        except Exception as inner_e:
+        except Exception:
             return {
                 "rejection_reason": "Analysis processing error.",
                 "plain_explanation": f"Failed to analyze the rejection letter. Ensure the API key is valid and try again. Error: {str(e)}",
@@ -121,6 +111,97 @@ Rejection Letter Content:
                 "score_breakdown": [],
                 "precedent_data": None
             }
+
+    result_json = _compute_final_score(result_json)
+
+    # ── PASS 2: Precedent Verification ───────────────────────────────
+    # Only runs if Pass 1 says the claim is challengeable.
+    # A separate, focused call verifies each candidate precedent
+    # using logical legal reasoning — NOT keyword matching.
+    result_json["precedent_data"] = None  # Safe default
+
+    if result_json.get("is_challengeable"):
+        core_issue = result_json.get("core_legal_issue", result_json.get("rejection_reason", ""))
+        verified_precedent = _verify_precedent_match(model, text, core_issue)
+        result_json["precedent_data"] = verified_precedent
+
+    return result_json
+
+
+def _verify_precedent_match(model, rejection_text: str, core_legal_issue: str) -> dict | None:
+    """
+    PASS 2: A dedicated, focused call whose ONLY job is to find a
+    truly matching precedent using legal logic — not keyword overlap.
+
+    Strategy:
+    - Present the core legal issue extracted in Pass 1.
+    - Ask Gemini to evaluate each precedent logically.
+    - Require it to explain WHY the legal reasoning applies, not just
+      that keywords match.
+    - If no precedent passes, return None (no precedent shown in UI).
+    """
+    # Build a clean list with key + full text for verification
+    precedent_list_lines = []
+    for k, v in PRECEDENTS_DB.items():
+        if k == "OTHER":
+            continue  # Skip the generic fallback
+        precedent_list_lines.append(
+            f"KEY: {k}\n"
+            f"Title: {v['title']}\n"
+            f"Citation: {v['citation']}\n"
+            f"Ruling: {v['text']}\n"
+        )
+    precedent_list = "\n---\n".join(precedent_list_lines)
+
+    verify_prompt = f"""You are a strict Indian insurance law expert performing a precedent verification check.
+
+TASK: Determine if ANY precedent in our database is a genuine legal match for the case below.
+A genuine match means the precedent's LEGAL RULING directly resolves or challenges the SAME legal question raised by this rejection.
+A match is NOT valid just because both use similar words like "exclusion", "claim", or "policy".
+
+THE REJECTION CASE:
+Core Legal Issue: {core_legal_issue}
+Full Rejection Letter: {rejection_text}
+
+VERIFICATION RULES (apply ALL of them):
+1. The precedent's core ruling must address the SAME legal question (not just the same topic area).
+2. The SPECIFIC FACTS must be comparable (e.g., a surgery exclusion case does NOT match a disease death claim).
+3. The LEGAL REMEDY offered by the precedent must be applicable to this specific rejection.
+4. If you are even slightly unsure, return NO_MATCH. A wrong precedent is far more damaging than no precedent.
+
+AVAILABLE PRECEDENTS:
+{precedent_list}
+
+RESPONSE FORMAT (respond with ONLY valid JSON, nothing else):
+If a genuine match exists:
+{{"match": true, "key": "<EXACT KEY FROM LIST>", "reason": "One sentence explaining WHY the legal ruling directly applies to this specific case."}}
+
+If no genuine match exists:
+{{"match": false, "key": null, "reason": "One sentence explaining why no precedent specifically covers this legal situation."}}"""
+
+    try:
+        verify_response = model.generate_content(
+            verify_prompt,
+            generation_config=genai.GenerationConfig(
+                response_mime_type="application/json"
+            )
+        )
+        verify_json = json.loads(verify_response.text)
+    except Exception:
+        try:
+            raw = verify_response.text if verify_response else ""
+            cleaned = raw.replace('```json', '').replace('```', '').strip()
+            verify_json = json.loads(cleaned)
+        except Exception:
+            return None  # If verification call fails, show no precedent (safe default)
+
+    # Only attach precedent if the verifier explicitly confirmed a match
+    if verify_json.get("match") is True:
+        matched_key = verify_json.get("key", "")
+        if matched_key and matched_key in PRECEDENTS_DB:
+            return get_precedent(matched_key)
+
+    return None  # No match confirmed — UI hides the precedent section
 
 
 def _compute_final_score(result_json: dict) -> dict:
