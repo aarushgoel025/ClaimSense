@@ -25,7 +25,7 @@ export default function UploadSection({ onAnalyze, error }) {
     e.preventDefault();
     setIsDragging(true);
   };
-  
+
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
@@ -58,18 +58,16 @@ export default function UploadSection({ onAnalyze, error }) {
 
       <div className="flex border-b border-border-default mb-8">
         <button
-          className={`flex-1 flex items-center justify-center gap-3 py-4 font-bold text-lg transition-all border-b-2 ${
-            activeTab === 'upload' ? 'border-electric-blue text-electric-blue bg-arctic-bg/50' : 'border-transparent text-text-muted hover:text-navy-deep hover:bg-arctic-bg/30'
-          }`}
+          className={`flex-1 flex items-center justify-center gap-3 py-4 font-bold text-lg transition-all border-b-2 ${activeTab === 'upload' ? 'border-electric-blue text-electric-blue bg-arctic-bg/50' : 'border-transparent text-text-muted hover:text-navy-deep hover:bg-arctic-bg/30'
+            }`}
           onClick={() => setActiveTab('upload')}
         >
           <UploadCloud size={22} className={activeTab === 'upload' ? 'animate-bounce-slow' : ''} />
           Upload Document
         </button>
         <button
-          className={`flex-1 flex items-center justify-center gap-3 py-4 font-bold text-lg transition-all border-b-2 ${
-            activeTab === 'text' ? 'border-electric-blue text-electric-blue bg-arctic-bg/50' : 'border-transparent text-text-muted hover:text-navy-deep hover:bg-arctic-bg/30'
-          }`}
+          className={`flex-1 flex items-center justify-center gap-3 py-4 font-bold text-lg transition-all border-b-2 ${activeTab === 'text' ? 'border-electric-blue text-electric-blue bg-arctic-bg/50' : 'border-transparent text-text-muted hover:text-navy-deep hover:bg-arctic-bg/30'
+            }`}
           onClick={() => setActiveTab('text')}
         >
           <FileText size={22} />
@@ -80,26 +78,25 @@ export default function UploadSection({ onAnalyze, error }) {
       <form onSubmit={handleSubmit} className="space-y-8 flex flex-col items-center relative z-10">
         {activeTab === 'upload' ? (
           <div
-            className={`w-full relative p-12 lg:p-16 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
-              isDragging ? 'bg-arctic-card-subtle border-electric-blue scale-[1.02]' 
-                         : file ? 'bg-arctic-bg border-electric-blue' 
-                                : 'bg-arctic-bg border-border-default hover:border-electric-blue/50 hover:bg-arctic-card-subtle'
-            }`}
+            className={`w-full relative p-12 lg:p-16 border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${isDragging ? 'bg-arctic-card-subtle border-electric-blue scale-[1.02]'
+                : file ? 'bg-arctic-bg border-electric-blue'
+                  : 'bg-arctic-bg border-border-default hover:border-electric-blue/50 hover:bg-arctic-card-subtle'
+              }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
           >
-            <input 
-              type="file" 
-              accept=".pdf" 
-              onChange={handleFileChange} 
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-            
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500 ${file ? 'bg-electric-blue/10 scale-110' : 'bg-white shadow-sm'}`}>
+
+            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500 ${file ? 'bg-electric-blue/10 scale-110' : 'bg-arctic-card shadow-sm'}`}>
               <FileDown size={36} className={`transition-colors duration-500 ${file ? 'text-electric-blue' : 'text-text-muted'}`} />
             </div>
-            
+
             <h3 className="text-2xl font-display font-bold text-navy-deep mb-2">
               {file ? file.name : 'Drop your Rejection Letter here'}
             </h3>
@@ -116,8 +113,8 @@ export default function UploadSection({ onAnalyze, error }) {
               onChange={(e) => setText(e.target.value)}
             ></textarea>
             <div className="flex justify-end mt-4">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={fillSampleData}
                 className="text-sm font-bold text-electric-blue hover:text-navy-deep flex items-center gap-2 transition-colors"
                 title="Loads the Maternity Waiting Period rejection sample"
@@ -137,9 +134,9 @@ export default function UploadSection({ onAnalyze, error }) {
         <button
           type="submit"
           disabled={activeTab === 'upload' ? !file : !text.trim()}
-          className={`w-full sm:w-2/3 md:w-1/2 text-lg py-4 font-bold rounded-sm flex items-center justify-center gap-3 transition-colors duration-300 ${(activeTab === 'upload' && !file) || (activeTab === 'text' && !text.trim()) ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-neon-orange hover:bg-neon-orange-dark text-white shadow-lg'}`}
+          className={`w-full sm:w-2/3 md:w-1/2 text-lg py-4 font-bold rounded-sm flex items-center justify-center gap-3 transition-colors duration-300 ${(activeTab === 'upload' && !file) || (activeTab === 'text' && !text.trim()) ? 'bg-border-default/40 text-text-muted/60 cursor-not-allowed' : 'bg-neon-orange hover:bg-neon-orange-dark text-white shadow-lg'}`}
         >
-           Initiate Clinical Analysis &rarr;
+          Initiate Clinical Analysis &rarr;
         </button>
       </form>
     </div>

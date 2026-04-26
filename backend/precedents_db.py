@@ -270,3 +270,32 @@ PRECEDENTS_DB = {
 
 def get_precedent(category: str) -> dict:
     return PRECEDENTS_DB.get(category, PRECEDENTS_DB["OTHER"])
+
+
+# ── Runtime DB override ───────────────────────────────────────────────────────
+# When the app starts and DATABASE_URL is configured, main.py loads all
+# precedents from PostgreSQL and calls set_runtime_db() to replace the
+# hardcoded dict above with live DB data.  get_precedent() automatically
+# prefers the DB-loaded data.  If the DB is unavailable, the hardcoded
+# PRECEDENTS_DB above acts as a safe fallback — the app still works.
+
+_runtime_db: dict | None = None
+
+
+def set_runtime_db(db: dict) -> None:
+    """Replace the in-memory precedents store with data loaded from PostgreSQL."""
+    global _runtime_db
+    _runtime_db = db
+
+
+def get_precedent(category: str) -> dict:  # noqa: F811 — intentional redefinition
+    """
+    Return the precedent for *category*.
+
+    Priority:
+      1. PostgreSQL-loaded data  (set at startup via set_runtime_db)
+      2. Hardcoded PRECEDENTS_DB (fallback if DB is unavailable)
+    """
+    source = _runtime_db if _runtime_db is not None else PRECEDENTS_DB
+    return source.get(category, source.get("OTHER", {}))
+

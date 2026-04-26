@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,8 +11,39 @@ from irdai_guidelines import IRDAI_GUIDELINES
 from analyzer import analyze_rejection
 from letter_generator import generate_appeal_letter
 from document_checklist import get_document_checklist
+import database
+import precedents_db
 
-app = FastAPI(title="ClaimSense API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Startup: connect to PostgreSQL and load precedents into memory.
+       Shutdown: close the connection pool cleanly."""
+    if database.DATABASE_URL:
+        try:
+            await database.connect_db()
+            await database.create_precedents_table()
+            loaded = await database.load_all_precedents()
+            if loaded:
+                precedents_db.set_runtime_db(loaded)
+                print(f"✅ Loaded {len(loaded)} precedents from PostgreSQL.")
+            else:
+                print("⚠️  Precedents table is empty — using built-in fallback dict.")
+                print("   Run: python seed_precedents.py  to populate it.")
+        except Exception as e:
+            print(f"⚠️  Could not connect to PostgreSQL: {e}")
+            print("   Falling back to built-in precedents dict.")
+    else:
+        print("ℹ️  DATABASE_URL not set — using built-in precedents dict.")
+
+    yield  # app runs here
+
+    if database.DATABASE_URL and database._pool:
+        await database.disconnect_db()
+        print("🔌 PostgreSQL connection pool closed.")
+
+
+app = FastAPI(title="ClaimSense API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

@@ -10,10 +10,19 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadingStep, setLoadingStep] = useState('');
+  const [isHogwartsMode, setIsHogwartsMode] = useState(false);
   const [history, setHistory] = useState(() => {
     const saved = localStorage.getItem('claimsense_history');
     return saved ? JSON.parse(saved) : [];
   });
+
+  React.useEffect(() => {
+    if (isHogwartsMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isHogwartsMode]);
 
   const handleAnalyze = async (formData) => {
     setIsLoading(true);
@@ -80,9 +89,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-arctic-bg font-sans text-text-muted flex flex-col">
-      {/* Dark Hero Container */}
-      <div className="bg-navy-deep relative overflow-hidden">
+    <div className={`min-h-screen font-sans flex flex-col ${isHogwartsMode ? 'bg-[#121411] text-[#9AA696]' : 'bg-arctic-bg text-text-muted'}`}>
+      {/* Hero Container */}
+      <div className={`relative overflow-hidden ${isHogwartsMode ? 'bg-[#1A1E1A] bg-[url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop")] bg-cover bg-center bg-no-repeat bg-blend-overlay bg-black/80' : 'bg-navy-deep'}`}>
         {/* Giant Watermark Text */}
         <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[400px] font-display font-extrabold text-white/[0.03] select-none pointer-events-none leading-none z-0">
           CS
@@ -91,32 +100,61 @@ function App() {
         {/* Navbar */}
         <header className="relative z-50">
           <div className="max-w-7xl mx-auto px-6 h-28 flex justify-between items-center">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection('top')}>
-              <div className="w-10 h-10 rounded-lg border border-neon-orange/20 flex items-center justify-center text-neon-orange font-display font-bold text-2xl">C</div>
-              <h1 className="text-3xl font-display font-light text-white tracking-tight">
-                Claim<span className="font-bold text-neon-orange">Sense</span>
-              </h1>
-            </div>
-            <nav className="hidden md:flex items-center gap-10">
-              <button
-                onClick={() => scrollToSection('about')}
-                className="text-white/80 font-medium hover:text-white transition-colors"
-              >
-                About
-              </button>
-              <button
-                onClick={() => scrollToSection('how')}
-                className="text-white/80 font-medium hover:text-white transition-colors"
-              >
-                How it Works
-              </button>
+            {isHogwartsMode ? (
+              <>
+                {/* Hogwarts Logo */}
+                <div className="flex items-center gap-10">
+                  <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('top')}>
+                    <h1 className="text-2xl font-display font-bold tracking-wider">
+                      <span className="text-[#D4AF37]">Claim</span><span className="text-[#F0F0E6]">Sense</span>
+                    </h1>
+                  </div>
+
+                  {/* Hogwarts Main Nav */}
+                  <nav className="hidden md:flex items-center gap-8 text-sm font-display tracking-widest uppercase">
+                    <button className="text-[#D4AF37] border-b-2 border-[#D4AF37] pb-1">Dashboard</button>
+
+                  </nav>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Standard Logo */}
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => scrollToSection('top')}>
+                  <div className="w-10 h-10 rounded-lg border border-neon-orange/20 flex items-center justify-center text-neon-orange font-display font-bold text-2xl">C</div>
+                  <h1 className="text-3xl font-display font-light text-white tracking-tight">
+                    Claim<span className="font-bold text-neon-orange">Sense</span>
+                  </h1>
+                </div>
+              </>
+            )}
+
+            <nav className="hidden md:flex items-center gap-6">
+              {!isHogwartsMode && (
+                <>
+                  <button onClick={() => scrollToSection('about')} className="text-white/80 font-medium hover:text-white transition-colors">About</button>
+                  <button onClick={() => scrollToSection('how')} className="text-white/80 font-medium hover:text-white transition-colors">How it Works</button>
+                </>
+              )}
 
               <button
-                className="bg-neon-orange hover:bg-neon-orange-dark text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(255,94,0,0.5)] hover:shadow-[0_0_25px_rgba(255,94,0,0.7)] transition-all duration-300"
-                onClick={() => scrollToSection('top')}
+                onClick={() => setIsHogwartsMode(!isHogwartsMode)}
+                className={`font-bold py-2 px-6 rounded-full transition-all duration-300 border-2 ${isHogwartsMode
+                  ? 'border-[#D4AF37] text-[#D4AF37] bg-black/40 hover:bg-[#D4AF37]/20 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                  : 'border-neon-orange text-white hover:bg-neon-orange/20'
+                  }`}
               >
-                Upload Letter
+                {isHogwartsMode ? '✨ Hogwarts Mode ON' : '🪄 Hogwarts Mode'}
               </button>
+
+              {!isHogwartsMode && (
+                <button
+                  className="bg-neon-orange hover:bg-neon-orange-dark text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(255,94,0,0.5)] hover:shadow-[0_0_25px_rgba(255,94,0,0.7)] transition-all duration-300"
+                  onClick={() => scrollToSection('top')}
+                >
+                  Upload Letter
+                </button>
+              )}
             </nav>
           </div>
         </header>
@@ -125,21 +163,49 @@ function App() {
           {!analysisResult && !isLoading && (
             <>
               {/* Hero Section */}
-              <section className="pt-24 pb-48 px-6 relative z-10 text-left max-w-7xl mx-auto w-full space-y-8">
-                <h1 className="text-5xl md:text-7xl font-display font-extrabold text-white leading-tight max-w-4xl">
-                  Actionable Insights, Optimal <span className="relative inline-block border-b-4 border-clara-orange pb-2">Claims Outcomes</span>
-                </h1>
-                <p className="text-xl md:text-2xl text-white/80 max-w-3xl leading-relaxed font-light">
-                  ClaimSense puts the <span className="font-bold text-white">AI in claims</span>! ClaimSense is the health insurance Claims Intelligence Platform driving the reversal of hyper-technical, wrongful claim rejections through precision legal precedents.
-                </p>
-                <div className="pt-4">
-                  <button
-                    className="bg-neon-orange hover:bg-neon-orange-dark text-white font-bold py-4 px-10 text-lg rounded-full shadow-[0_0_15px_rgba(255,94,0,0.5)] hover:shadow-[0_0_25px_rgba(255,94,0,0.7)] transition-all duration-300"
-                    onClick={() => document.getElementById('upload-zone').scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    Start Analysis &rarr;
-                  </button>
-                </div>
+              <section className={`pt-24 pb-48 px-6 relative z-10 w-full ${isHogwartsMode ? 'text-center max-w-4xl mx-auto flex flex-col items-center' : 'text-left max-w-7xl mx-auto space-y-8'}`}>
+                {isHogwartsMode ? (
+                  <>
+                    <div className="border border-[#D4AF37]/30 text-[#D4AF37] font-display text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-6 bg-[#D4AF37]/5 backdrop-blur-sm">
+                      Archival Intelligence For Insurance
+                    </div>
+
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-normal text-[#F0F0E6] leading-snug mb-6">
+                      Uncover the Truth Behind<br />
+                      <span className="text-[#D4AF37] italic font-medium">Rejected Claims</span> — With Magic
+                    </h1>
+
+                    <p className="text-sm md:text-base text-[#9AA696] max-w-2xl leading-relaxed font-sans mb-12">
+                      Harness the precision of ancient legal sigils and modern archival data. ClaimSense decodes the complexity of rejections using sophisticated algorithmic alchemy.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-6">
+                      <button
+                        className="border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 font-display text-sm uppercase tracking-widest py-3 px-8 rounded-md transition-all duration-300"
+                        onClick={() => document.getElementById('upload-zone').scrollIntoView({ behavior: 'smooth' })}
+                      >
+                        Cast Analysis Spell ✨
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-5xl md:text-7xl font-display font-extrabold text-white leading-tight max-w-4xl">
+                      Actionable Insights, Optimal <span className="relative inline-block border-b-4 border-clara-orange pb-2">Claims Outcomes</span>
+                    </h1>
+                    <p className="text-xl md:text-2xl text-white/80 max-w-3xl leading-relaxed font-light">
+                      ClaimSense puts the <span className="font-bold text-white">AI in claims</span>! ClaimSense is the health insurance Claims Intelligence Platform driving the reversal of hyper-technical, wrongful claim rejections through precision legal precedents.
+                    </p>
+                    <div className="pt-4">
+                      <button
+                        className="bg-neon-orange hover:bg-neon-orange-dark text-white font-bold py-4 px-10 text-lg rounded-full shadow-[0_0_15px_rgba(255,94,0,0.5)] hover:shadow-[0_0_25px_rgba(255,94,0,0.7)] transition-all duration-300"
+                        onClick={() => document.getElementById('upload-zone').scrollIntoView({ behavior: 'smooth' })}
+                      >
+                        Start Analysis &rarr;
+                      </button>
+                    </div>
+                  </>
+                )}
               </section>
             </>
           )}
@@ -171,7 +237,7 @@ function App() {
                       <div
                         key={idx}
                         onClick={() => setAnalysisResult(report)}
-                        className="bg-white p-6 rounded-xl border border-border-default hover:border-neon-orange/50 hover:shadow-card-hover transition-all cursor-pointer group relative overflow-hidden"
+                        className="bg-arctic-card p-6 rounded-xl border border-border-default hover:border-neon-orange/50 hover:shadow-card-hover transition-all cursor-pointer group relative overflow-hidden"
                       >
                         <div className="absolute top-0 right-0 w-2 h-full bg-neon-orange/10 group-hover:bg-neon-orange/30 transition-colors"></div>
                         <div className="flex justify-between items-start mb-4">
@@ -179,8 +245,8 @@ function App() {
                             {report.is_challengeable ? 'Challengeable' : 'Valid'}
                           </span>
                           <span className={`font-bold text-lg ${(report.success_probability || 0) > 70 ? 'text-success-green' :
-                              (report.success_probability || 0) >= 40 ? 'text-amber-500' :
-                                'text-danger-red'
+                            (report.success_probability || 0) >= 40 ? 'text-amber-500' :
+                              'text-danger-red'
                             }`}>
                             {report.success_probability || 0}%
                           </span>
@@ -238,7 +304,7 @@ function App() {
                     { step: '5', title: 'Drafing the Appeal Letter', desc: 'The backend feeds Gemini with the facts of rejection and specific Ombudsman precedent that it pulled off from database. Then Gemini then drafts a highly professional, aggressive, and legally-backed Grievance Appeal Letter referencing those exact laws, maximizing the chances the insurer will reverse their decision.  ' },
                     { step: '6', title: 'The Resolution Dashboard', desc: 'The Analysis Dashboard appears where you can see a green "Challangeable" or red "Valid Rejection" tag, and gives explanation for the same in plain English. If the rejection is "CHALLENGEABLE", an Appeal Letter is drafted that is ready to be downloaded' }
                   ].map((s, i) => (
-                    <div key={i} className="card hover:shadow-card-hover transition-shadow bg-white transform hover:-translate-y-1 duration-300">
+                    <div key={i} className="card hover:shadow-card-hover transition-shadow bg-arctic-card transform hover:-translate-y-1 duration-300">
                       <div className="w-12 h-12 rounded-xl bg-arctic-card-subtle text-electric-blue flex items-center justify-center font-display font-bold text-xl mb-6 border border-border-default">
                         {s.step}
                       </div>
@@ -305,7 +371,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-border-default py-8 mt-auto">
+      <footer className="bg-arctic-card border-t border-border-default py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-text-muted text-sm font-medium">
             ClaimSense © 2026. Built with precision for Indian Health Insurance consumers.

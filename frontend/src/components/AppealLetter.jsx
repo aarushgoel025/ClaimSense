@@ -30,7 +30,7 @@ export default function AppealLetter({ letter, isChallengeable }) {
   };
 
   return (
-    <div className="card border p-0 overflow-hidden flex flex-col bg-white shadow-card-elevated hover:shadow-card-hover transition-all">
+    <div className="card border p-0 overflow-hidden flex flex-col bg-arctic-card shadow-card-elevated hover:shadow-card-hover transition-all">
       {/* Header */}
       <div className="bg-arctic-secondary px-6 py-5 flex justify-between items-center border-b border-border-default">
         <div className="flex items-center gap-3">
@@ -42,7 +42,7 @@ export default function AppealLetter({ letter, isChallengeable }) {
         <div className="flex gap-2">
           <button
             onClick={handleCopy}
-            className="p-2 rounded-lg text-text-muted hover:text-electric-blue hover:bg-white transition-colors border border-transparent hover:border-border-default shadow-sm"
+            className="p-2 rounded-lg text-text-muted hover:text-electric-blue hover:bg-arctic-card transition-colors border border-transparent hover:border-border-default shadow-sm"
             title="Copy to clipboard"
           >
             <Copy size={20} />
@@ -57,8 +57,8 @@ export default function AppealLetter({ letter, isChallengeable }) {
       </div>
 
       {/* Letter Content */}
-      <div className="flex-grow bg-[#FAFCFF] p-6 lg:p-8 overflow-y-auto" style={{ maxHeight: '400px' }}>
-        <div className="bg-white border rounded-lg border-border-default shadow-sm p-6 lg:p-8 font-serif text-sm md:text-base leading-relaxed text-navy-deep whitespace-pre-wrap">
+      <div className="flex-grow bg-arctic-bg p-6 lg:p-8 overflow-y-auto" style={{ maxHeight: '400px' }}>
+        <div className="bg-arctic-card border rounded-lg border-border-default shadow-sm p-6 lg:p-8 font-serif text-sm md:text-base leading-relaxed text-navy-deep whitespace-pre-wrap">
           {letter}
         </div>
       </div>

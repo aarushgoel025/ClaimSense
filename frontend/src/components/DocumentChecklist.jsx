@@ -21,7 +21,7 @@ export default function DocumentChecklist({ checklist }) {
   const progress = Math.round((checkedCount / totalCount) * 100);
 
   return (
-    <div className="card border overflow-hidden bg-white shadow-card-elevated hover:shadow-card-hover transition-all">
+    <div className="card border overflow-hidden bg-arctic-card shadow-card-elevated hover:shadow-card-hover transition-all">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
@@ -42,12 +42,11 @@ export default function DocumentChecklist({ checklist }) {
         </div>
         <div className="flex items-center gap-3">
           {/* Progress Pill */}
-          <div className="hidden sm:flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-border-default shadow-sm">
-            <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="hidden sm:flex items-center gap-2 bg-arctic-card px-3 py-1.5 rounded-full border border-border-default shadow-sm">
+            <div className="w-16 h-1.5 bg-arctic-card-subtle rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-500 ${
-                  progress === 100 ? 'bg-success-green' : 'bg-electric-blue'
-                }`}
+                className={`h-full rounded-full transition-all duration-500 ${progress === 100 ? 'bg-success-green' : 'bg-electric-blue'
+                  }`}
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -81,23 +80,21 @@ export default function DocumentChecklist({ checklist }) {
                     <button
                       key={globalIdx}
                       onClick={() => toggleItem(globalIdx)}
-                      className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 group ${
-                        isChecked
-                          ? 'bg-success-green/5 border-success-green/20'
-                          : 'bg-white border-border-default hover:border-electric-blue/30 hover:bg-arctic-card-subtle'
-                      }`}
+                      className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 group ${isChecked
+                        ? 'bg-success-green/5 border-success-green/20'
+                        : 'bg-arctic-card border-border-default hover:border-electric-blue/30 hover:bg-arctic-card-subtle'
+                        }`}
                     >
                       <div className="mt-0.5 flex-shrink-0">
                         {isChecked ? (
                           <CheckCircle2 size={20} className="text-success-green" />
                         ) : (
-                          <Circle size={20} className="text-gray-300 group-hover:text-electric-blue/50" />
+                          <Circle size={20} className="text-text-muted/40 group-hover:text-electric-blue/50" />
                         )}
                       </div>
                       <div className="flex-grow min-w-0">
-                        <p className={`text-sm font-semibold leading-tight ${
-                          isChecked ? 'text-success-green line-through opacity-70' : 'text-navy-deep'
-                        }`}>
+                        <p className={`text-sm font-semibold leading-tight ${isChecked ? 'text-success-green line-through opacity-70' : 'text-navy-deep'
+                          }`}>
                           {doc.name}
                         </p>
                         <p className="text-xs text-text-muted mt-1 leading-relaxed">
@@ -130,23 +127,21 @@ export default function DocumentChecklist({ checklist }) {
                     <button
                       key={globalIdx}
                       onClick={() => toggleItem(globalIdx)}
-                      className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 group ${
-                        isChecked
-                          ? 'bg-success-green/5 border-success-green/20'
-                          : 'bg-white border-border-default/50 hover:border-electric-blue/30 hover:bg-arctic-card-subtle'
-                      }`}
+                      className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all duration-200 group ${isChecked
+                        ? 'bg-success-green/5 border-success-green/20'
+                        : 'bg-arctic-card border-border-default/50 hover:border-electric-blue/30 hover:bg-arctic-card-subtle'
+                        }`}
                     >
                       <div className="mt-0.5 flex-shrink-0">
                         {isChecked ? (
                           <CheckCircle2 size={20} className="text-success-green" />
                         ) : (
-                          <Circle size={20} className="text-gray-300 group-hover:text-electric-blue/50" />
+                          <Circle size={20} className="text-text-muted/40 group-hover:text-electric-blue/50" />
                         )}
                       </div>
                       <div className="flex-grow min-w-0">
-                        <p className={`text-sm font-semibold leading-tight ${
-                          isChecked ? 'text-success-green line-through opacity-70' : 'text-navy-deep'
-                        }`}>
+                        <p className={`text-sm font-semibold leading-tight ${isChecked ? 'text-success-green line-through opacity-70' : 'text-navy-deep'
+                          }`}>
                           {doc.name}
                         </p>
                         <p className="text-xs text-text-muted mt-1 leading-relaxed">

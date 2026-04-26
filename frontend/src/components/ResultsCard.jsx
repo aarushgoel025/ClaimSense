@@ -57,7 +57,7 @@ export default function ResultsCard({ result }) {
                   stroke="currentColor"
                   strokeWidth="8"
                   fill="transparent"
-                  className="text-gray-100"
+                  className="text-border-default/30"
                 />
                 <circle
                   cx="64"
@@ -180,9 +180,9 @@ export default function ResultsCard({ result }) {
 
       {/* Precedent Matching Card (if exists) */}
       {precedent_data && precedent_data.title !== "General Unfair Claim Settlement" && (
-        <div className="card relative overflow-hidden bg-gradient-to-br from-white to-arctic-card-subtle border-l-4 border-l-electric-blue">
+        <div className="card relative overflow-hidden bg-gradient-to-br from-arctic-card to-arctic-card-subtle border-l-4 border-l-electric-blue">
           <div className="flex items-start gap-4 mb-4">
-            <div className="p-3 bg-white rounded-xl shadow-sm border border-border-default text-electric-blue">
+            <div className="p-3 bg-arctic-card rounded-xl shadow-sm border border-border-default text-electric-blue">
               <Scale size={24} />
             </div>
             <div>
