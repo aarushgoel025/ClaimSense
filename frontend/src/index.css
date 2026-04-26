@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@800&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -280,7 +282,7 @@ h6 {
 /* =============================================
    HOGWARTS MODE (Dark Theme)
    ============================================= */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 
 .dark {
   --color-arctic-bg: #121411;
