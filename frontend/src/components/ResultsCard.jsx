@@ -182,21 +182,21 @@ export default function ResultsCard({ result }) {
       {precedent_data && precedent_data.title !== "General Unfair Claim Settlement" && (
         <div className="card relative overflow-hidden bg-gradient-to-br from-arctic-card to-arctic-card-subtle border-l-4 border-l-electric-blue">
           <div className="flex items-start gap-4 mb-4">
-            <div className="p-3 bg-arctic-card rounded-xl shadow-sm border border-border-default text-electric-blue">
+            <div className="p-3 bg-navy-deep rounded-xl shadow-sm border border-border-default text-electric-blue">
               <Scale size={24} />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Supported Legal Precedent</span>
-              <h3 className="text-lg font-bold text-navy-deep mt-1">{precedent_data.citation}</h3>
+              <span className="text-xs font-bold uppercase tracking-wider text-navy-deep">Supported Legal Precedent</span>
+              <h3 className="text-lg font-bold text-electric-blue mt-1">{precedent_data.citation}</h3>
             </div>
           </div>
 
           <div className="pl-16 relative">
-            <div className="absolute left-7 top-0 bottom-0 w-px bg-electric-blue/20"></div>
-            <p className="text-text-muted leading-relaxed italic relative">
-              <span className="absolute -left-10 top-0 text-4xl text-electric-blue/20 font-serif">"</span>
+            <div className="absolute left-7 top-0 bottom-0 w-px bg-electric-blue/30"></div>
+            <p className="text-black leading-relaxed italic relative font-medium">
+              <span className="absolute -left-10 top-0 text-4xl text-electric-blue/40 font-serif">"</span>
               {precedent_data.text}
-              <span className="absolute -ml-2 bottom-0 text-4xl text-electric-blue/20 font-serif">"</span>
+              <span className="absolute -ml-2 bottom-0 text-4xl text-electric-blue/40 font-serif">"</span>
             </p>
           </div>
         </div>

@@ -4,8 +4,12 @@ import ResultsCard from './components/ResultsCard';
 import AppealLetter from './components/AppealLetter';
 import DocumentChecklist from './components/DocumentChecklist';
 import ActionRoadmap from './components/ActionRoadmap';
+import LoginPage from './components/LoginPage';
+import { useAuth } from './context/AuthContext';
+import { LogOut, User } from 'lucide-react';
 
 function App() {
+  const { user, loading: authLoading, signOut } = useAuth();
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,6 +27,25 @@ function App() {
       document.body.classList.remove('dark');
     }
   }, [isHogwartsMode]);
+
+  // ── Auth Loading Screen ──
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-navy-deep flex flex-col items-center justify-center">
+        <div className="relative w-20 h-20 mb-6">
+          <div className="absolute inset-0 border-4 border-electric-blue/20 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-neon-orange border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <h2 className="text-xl font-display font-bold text-white">ClaimSense</h2>
+        <p className="text-white/50 text-sm mt-2">Verifying your session...</p>
+      </div>
+    );
+  }
+
+  // ── Show Login Page if not authenticated ──
+  if (!user) {
+    return <LoginPage />;
+  }
 
   const handleAnalyze = async (formData) => {
     setIsLoading(true);
@@ -155,6 +178,21 @@ function App() {
                   Upload Letter
                 </button>
               )}
+
+              {/* User Info & Logout */}
+              <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/20">
+                <div className="flex items-center gap-2 text-white/70 text-sm">
+                  <User size={16} />
+                  <span className="max-w-[140px] truncate">{user?.email}</span>
+                </div>
+                <button
+                  onClick={signOut}
+                  className="flex items-center gap-1.5 text-white/60 hover:text-danger-red font-medium text-sm transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut size={16} />
+                </button>
+              </div>
             </nav>
           </div>
         </header>
