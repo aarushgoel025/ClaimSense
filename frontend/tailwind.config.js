@@ -17,7 +17,7 @@ export default {
         'navy-mid': '#1E3A5F',
         'electric-blue': '#1D6FF2',
         
-        // Hogwarts (Mystic)
+        // Dark Mode (Mystic)
         'mystic-bg': '#121411',
         'mystic-card': '#1A1E1A',
         'mystic-card-hover': '#252B24',

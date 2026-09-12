@@ -26,21 +26,21 @@ async def lifespan(app: FastAPI):
             loaded = await database.load_all_precedents()
             if loaded:
                 precedents_db.set_runtime_db(loaded)
-                print(f"✅ Loaded {len(loaded)} precedents from PostgreSQL.")
+                print(f"[OK] Loaded {len(loaded)} precedents from PostgreSQL.")
             else:
-                print("⚠️  Precedents table is empty — using built-in fallback dict.")
-                print("   Run: python seed_precedents.py  to populate it.")
+                print("[WARN] Precedents table is empty - using built-in fallback dict.")
+                print("       Run: python seed_precedents.py to populate it.")
         except Exception as e:
-            print(f"⚠️  Could not connect to PostgreSQL: {e}")
-            print("   Falling back to built-in precedents dict.")
+            print(f"[WARN] Could not connect to PostgreSQL: {e}")
+            print("       Falling back to built-in precedents dict.")
     else:
-        print("ℹ️  DATABASE_URL not set — using built-in precedents dict.")
+        print("[INFO] DATABASE_URL not set - using built-in precedents dict.")
 
     yield  # app runs here
 
     if database.DATABASE_URL and database._pool:
         await database.disconnect_db()
-        print("🔌 PostgreSQL connection pool closed.")
+        print("[INFO] PostgreSQL connection pool closed.")
 
 
 app = FastAPI(title="ClaimSense API", lifespan=lifespan)

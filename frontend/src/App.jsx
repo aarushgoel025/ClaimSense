@@ -4,48 +4,24 @@ import ResultsCard from './components/ResultsCard';
 import AppealLetter from './components/AppealLetter';
 import DocumentChecklist from './components/DocumentChecklist';
 import ActionRoadmap from './components/ActionRoadmap';
-import LoginPage from './components/LoginPage';
-import { useAuth } from './context/AuthContext';
-import { LogOut, User } from 'lucide-react';
-
 function App() {
-  const { user, loading: authLoading, signOut } = useAuth();
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadingStep, setLoadingStep] = useState('');
-  const [isHogwartsMode, setIsHogwartsMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [history, setHistory] = useState(() => {
     const saved = localStorage.getItem('claimsense_history');
     return saved ? JSON.parse(saved) : [];
   });
 
   React.useEffect(() => {
-    if (isHogwartsMode) {
+    if (isDarkMode) {
       document.body.classList.add('dark');
     } else {
       document.body.classList.remove('dark');
     }
-  }, [isHogwartsMode]);
-
-  // ── Auth Loading Screen ──
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-navy-deep flex flex-col items-center justify-center">
-        <div className="relative w-20 h-20 mb-6">
-          <div className="absolute inset-0 border-4 border-electric-blue/20 rounded-full"></div>
-          <div className="absolute inset-0 border-4 border-neon-orange border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        <h2 className="text-xl font-display font-bold text-white">ClaimSense</h2>
-        <p className="text-white/50 text-sm mt-2">Verifying your session...</p>
-      </div>
-    );
-  }
-
-  // ── Show Login Page if not authenticated ──
-  if (!user) {
-    return <LoginPage />;
-  }
+  }, [isDarkMode]);
 
   const handleAnalyze = async (formData) => {
     setIsLoading(true);
@@ -112,9 +88,9 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col ${isHogwartsMode ? 'bg-[#121411] text-[#9AA696]' : 'bg-arctic-bg text-text-muted'}`}>
+    <div className={`min-h-screen font-sans flex flex-col ${isDarkMode ? 'bg-[#121411] text-[#9AA696]' : 'bg-arctic-bg text-text-muted'}`}>
       {/* Hero Container */}
-      <div className={`relative overflow-hidden ${isHogwartsMode ? 'bg-[#1A1E1A] bg-[url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop")] bg-cover bg-center bg-no-repeat bg-blend-overlay bg-black/80' : 'bg-navy-deep'}`}>
+      <div className={`relative overflow-hidden ${isDarkMode ? 'bg-[#1A1E1A] bg-[url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop")] bg-cover bg-center bg-no-repeat bg-blend-overlay bg-black/80' : 'bg-navy-deep'}`}>
         {/* Giant Watermark Text */}
         <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-[400px] font-display font-extrabold text-white/[0.03] select-none pointer-events-none leading-none z-0">
           CS
@@ -123,9 +99,9 @@ function App() {
         {/* Navbar */}
         <header className="relative z-50">
           <div className="max-w-7xl mx-auto px-6 h-28 flex justify-between items-center">
-            {isHogwartsMode ? (
+            {isDarkMode ? (
               <>
-                {/* Hogwarts Logo */}
+                {/* Dark Mode Logo */}
                 <div className="flex items-center gap-10">
                   <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('top')}>
                     <h1 className="text-2xl font-display font-bold tracking-wider">
@@ -133,7 +109,7 @@ function App() {
                     </h1>
                   </div>
 
-                  {/* Hogwarts Main Nav */}
+                  {/* Dark Mode Main Nav */}
                   <nav className="hidden md:flex items-center gap-8 text-sm font-display tracking-widest uppercase">
                     <button className="text-[#D4AF37] border-b-2 border-[#D4AF37] pb-1">Dashboard</button>
 
@@ -153,7 +129,7 @@ function App() {
             )}
 
             <nav className="hidden md:flex items-center gap-6">
-              {!isHogwartsMode && (
+              {!isDarkMode && (
                 <>
                   <button onClick={() => scrollToSection('about')} className="text-white/80 font-medium hover:text-white transition-colors">About</button>
                   <button onClick={() => scrollToSection('how')} className="text-white/80 font-medium hover:text-white transition-colors">How it Works</button>
@@ -161,16 +137,16 @@ function App() {
               )}
 
               <button
-                onClick={() => setIsHogwartsMode(!isHogwartsMode)}
-                className={`font-bold py-2 px-6 rounded-full transition-all duration-300 border-2 ${isHogwartsMode
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`font-bold py-2 px-6 rounded-full transition-all duration-300 border-2 ${isDarkMode
                   ? 'border-[#D4AF37] text-[#D4AF37] bg-black/40 hover:bg-[#D4AF37]/20 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
                   : 'border-neon-orange text-white hover:bg-neon-orange/20'
                   }`}
               >
-                {isHogwartsMode ? '✨ Hogwarts Mode ON' : '🪄 Hogwarts Mode'}
+                {isDarkMode ? '🌙 Dark Mode ON' : '🌙 Dark Mode'}
               </button>
 
-              {!isHogwartsMode && (
+              {!isDarkMode && (
                 <button
                   className="bg-neon-orange hover:bg-neon-orange-dark text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(255,94,0,0.5)] hover:shadow-[0_0_25px_rgba(255,94,0,0.7)] transition-all duration-300"
                   onClick={() => scrollToSection('top')}
@@ -179,20 +155,6 @@ function App() {
                 </button>
               )}
 
-              {/* User Info & Logout */}
-              <div className="flex items-center gap-3 ml-2 pl-4 border-l border-white/20">
-                <div className="flex items-center gap-2 text-white/70 text-sm">
-                  <User size={16} />
-                  <span className="max-w-[140px] truncate">{user?.email}</span>
-                </div>
-                <button
-                  onClick={signOut}
-                  className="flex items-center gap-1.5 text-white/60 hover:text-danger-red font-medium text-sm transition-colors"
-                  title="Sign out"
-                >
-                  <LogOut size={16} />
-                </button>
-              </div>
             </nav>
           </div>
         </header>
@@ -201,8 +163,8 @@ function App() {
           {!analysisResult && !isLoading && (
             <>
               {/* Hero Section */}
-              <section className={`pt-24 pb-48 px-6 relative z-10 w-full ${isHogwartsMode ? 'text-center max-w-4xl mx-auto flex flex-col items-center' : 'text-left max-w-7xl mx-auto space-y-8'}`}>
-                {isHogwartsMode ? (
+              <section className={`pt-24 pb-48 px-6 relative z-10 w-full ${isDarkMode ? 'text-center max-w-4xl mx-auto flex flex-col items-center' : 'text-left max-w-7xl mx-auto space-y-8'}`}>
+                {isDarkMode ? (
                   <>
                     <div className="border border-[#D4AF37]/30 text-[#D4AF37] font-display text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-6 bg-[#D4AF37]/5 backdrop-blur-sm">
                       Archival Intelligence For Insurance

@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 def generate_appeal_letter(case_data: dict) -> str:
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    model = genai.GenerativeModel('gemini-3.6-flash')
     
     precedent_text = ""
     precedent_data = case_data.get('precedent_data')

@@ -45,7 +45,7 @@ SCORING_CATEGORIES = {
 
 def analyze_rejection(text: str, irdai_rules: str) -> dict:
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    model = genai.GenerativeModel('gemini-3.6-flash')
 
     # ── PASS 1: Case Analysis (no precedent selection) ────────────────
     # Gemini's only job here is to understand the rejection and score it.
